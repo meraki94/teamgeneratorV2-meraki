@@ -1,1088 +1,2173 @@
 <!DOCTYPE html>
+
 <html lang="en" class="dark">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Bangkapi, Hua Mak, BKK Football Group</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
+
 <script>tailwind.config = { darkMode: 'class' }</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
+
   * { box-sizing: border-box; }
+
   body {
+
     font-family: 'Inter', sans-serif;
+
     min-height: 100vh;
+
     overflow-x: hidden;
+
     -webkit-font-smoothing: antialiased;
+
   }
+
+
 
   /* Watermark */
+
   body::before {
+
     content: 'meraki';
+
     position: fixed;
+
     top: 50%; left: 50%;
+
     transform: translate(-50%, -50%) rotate(-25deg);
+
     font-family: 'Sora', sans-serif;
+
     font-weight: 700;
+
     font-size: clamp(72px, 18vw, 160px);
+
     color: currentColor;
+
     opacity: 0.04;
+
     pointer-events: none;
+
     z-index: 0;
+
     letter-spacing: 0.25em;
+
     white-space: nowrap;
+
     user-select: none;
+
   }
+
+
 
   /* LIGHT THEME */
+
   :root {
+
     --bg:       #f9fafb;
+
     --surface:  #ffffff;
+
     --surface2: #f3f4f6;
+
     --border:   #e5e7eb;
+
     --border2:  #d1d5db;
+
     --text:     #111827;
+
     --text2:    #6b7280;
+
     --accent:   #16a34a;
+
     --accent-h: #15803d;
+
     --accent-s: rgba(22,163,74,0.08);
+
     --gold:     #d97706;
+
     --red:      #dc2626;
+
     --red-s:    rgba(220,38,38,0.08);
+
   }
 
+
+
   /* DARK THEME */
+
   html.dark {
+
     --bg:       #0f1117;
+
     --surface:  #1a1d27;
+
     --surface2: #22263a;
+
     --border:   #2a2f45;
+
     --border2:  #353b55;
+
     --text:     #f0f2f8;
+
     --text2:    #8892b0;
+
     --accent:   #34d399;
+
     --accent-h: #10b981;
+
     --accent-s: rgba(52,211,153,0.09);
+
     --gold:     #fbbf24;
+
     --red:      #f87171;
+
     --red-s:    rgba(248,113,113,0.1);
+
   }
+
+
 
   body { background: var(--bg); color: var(--text); transition: background 0.2s, color 0.2s; }
 
+
+
   .site-header {
+
     background: var(--surface);
+
     border-bottom: 1px solid var(--border);
+
     position: sticky; top: 0; z-index: 100;
+
   }
+
   .header-title {
+
     font-family: 'Sora', sans-serif; font-weight: 700;
+
     font-size: clamp(13px, 3.2vw, 19px);
+
     color: var(--text); letter-spacing: -0.01em; line-height: 1.2;
+
   }
+
   .header-sub {
+
     font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+
     text-transform: uppercase; color: var(--accent);
+
     font-family: 'JetBrains Mono', monospace;
+
   }
+
+
 
   .theme-toggle {
+
     width: 34px; height: 34px; border-radius: 8px;
+
     border: 1px solid var(--border); background: var(--surface2);
+
     color: var(--text2); cursor: pointer;
+
     display: flex; align-items: center; justify-content: center;
+
     font-size: 15px; transition: all 0.15s; flex-shrink: 0;
+
   }
+
   .theme-toggle:hover { border-color: var(--border2); color: var(--text); }
 
+
+
   .tab-bar {
+
     background: var(--surface); border-bottom: 1px solid var(--border);
+
     display: flex; overflow-x: auto; scrollbar-width: none;
+
     position: sticky; top: 57px; z-index: 99;
+
   }
+
   .tab-bar::-webkit-scrollbar { display: none; }
+
   .tab-btn {
+
     flex: 1; min-width: 80px; padding: 11px 8px;
+
     font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+
     text-transform: uppercase; letter-spacing: 0.07em;
+
     color: var(--text2); border: none; background: transparent;
+
     cursor: pointer; border-bottom: 2px solid transparent;
+
     transition: all 0.15s; white-space: nowrap;
+
   }
+
   .tab-btn:hover { color: var(--text); }
+
   .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
+
+
   .tab-content { display: none; position: relative; z-index: 1; }
+
   .tab-content.active { display: block; }
 
+
+
   .card {
+
     background: var(--surface); border: 1px solid var(--border);
+
     border-radius: 12px; overflow: hidden;
+
   }
+
   .card-header {
+
     background: var(--surface); padding: 13px 16px;
+
     border-bottom: 1px solid var(--border);
+
     font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
+
     color: var(--text); display: flex; align-items: center; gap: 7px;
+
   }
+
+
 
   input[type="text"], input[type="number"], select, textarea {
+
     background: var(--surface2); border: 1px solid var(--border);
+
     border-radius: 8px; color: var(--text); padding: 9px 13px;
+
     font-family: 'Inter', sans-serif; font-size: 14px; width: 100%;
+
     transition: border-color 0.15s, box-shadow 0.15s; outline: none; -webkit-appearance: none;
+
   }
+
   input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+
     border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-s);
+
   }
+
   input::placeholder { color: var(--text2); opacity: 0.6; }
 
+
+
   .btn {
+
     display: inline-flex; align-items: center; gap: 6px;
+
     padding: 9px 16px; border-radius: 8px;
+
     font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+
     cursor: pointer; border: 1px solid transparent; transition: all 0.15s;
+
     letter-spacing: 0.01em; white-space: nowrap; line-height: 1;
+
   }
+
   .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+
   .btn-primary:hover { background: var(--accent-h); border-color: var(--accent-h); transform: translateY(-1px); box-shadow: 0 4px 14px var(--accent-s); }
+
   .btn-secondary { background: var(--surface2); color: var(--text); border-color: var(--border); }
+
   .btn-secondary:hover { border-color: var(--border2); }
+
   .btn-danger { background: var(--red-s); color: var(--red); border-color: transparent; }
+
   .btn-danger:hover { opacity: 0.8; }
+
   .btn-sm { padding: 6px 11px; font-size: 12px; border-radius: 6px; }
 
+
+
   .player-row {
+
     display: flex; align-items: center; gap: 10px;
+
     padding: 9px 14px; border-bottom: 1px solid var(--border); transition: background 0.12s;
+
   }
+
   .player-row:hover { background: var(--surface2); }
+
   .player-row:last-child { border-bottom: none; }
+
+
 
   .stars { color: var(--gold); letter-spacing: -1px; font-size: 12px; }
 
+
+
   .badge {
+
     display: inline-flex; align-items: center;
+
     padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600;
+
     font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;
+
   }
+
   .badge-green { background: var(--accent-s); color: var(--accent); }
+
   .badge-gold  { background: rgba(251,191,36,0.12); color: var(--gold); }
+
   .badge-blue  { background: rgba(99,102,241,0.1); color: #818cf8; }
 
+
+
   .counter-banner {
+
     background: var(--surface); border: 1px solid var(--border);
+
     border-radius: 12px; padding: 14px 18px;
+
     display: flex; align-items: center; justify-content: space-between;
+
   }
+
+
 
   .team-card {
+
     background: var(--surface); border: 1px solid var(--border);
+
     border-radius: 12px; overflow: hidden;
+
   }
+
   .team-header {
+
     padding: 11px 15px; font-family: 'Sora', sans-serif;
+
     font-size: 14px; font-weight: 700;
+
     display: flex; align-items: center; justify-content: space-between;
+
     border-bottom: 1px solid var(--border); background: var(--surface2);
+
   }
+
   .team-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
   .dot-a { background: #34d399; } .dot-b { background: #60a5fa; }
+
   .dot-c { background: #fb923c; } .dot-d { background: #c084fc; }
+
   .dot-e { background: #facc15; }
+
   .team-a-accent { border-top: 2px solid #34d399; }
+
   .team-b-accent { border-top: 2px solid #60a5fa; }
+
   .team-c-accent { border-top: 2px solid #fb923c; }
+
   .team-d-accent { border-top: 2px solid #c084fc; }
+
   .team-e-accent { border-top: 2px solid #facc15; }
 
+
+
   .lb-row {
+
     display: flex; align-items: center;
+
     padding: 11px 15px; border-bottom: 1px solid var(--border); gap: 12px;
+
   }
+
   .lb-row:last-child { border-bottom: none; }
+
   .lb-rank {
+
     font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+
     width: 28px; text-align: center; flex-shrink: 0; color: var(--text2);
+
   }
+
   .rank-1 { color: #f59e0b; font-size: 18px; }
+
   .rank-2 { color: #9ca3af; font-size: 18px; }
+
   .rank-3 { color: #b45309; font-size: 18px; }
 
+
+
   .star-bar { height: 3px; border-radius: 2px; background: var(--border); overflow: hidden; margin-top: 4px; max-width: 100px; }
+
   .star-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+
+
 
   input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
 
+
+
   .modal-overlay {
+
     position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+
     z-index: 1000; display: flex; align-items: center; justify-content: center;
+
     padding: 20px; backdrop-filter: blur(6px);
+
   }
+
   .modal-box {
+
     background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+
     padding: 28px 24px; max-width: 380px; width: 100%;
+
     box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+
   }
+
+
 
   .log-item {
+
     background: var(--surface); border: 1px solid var(--border);
+
     border-radius: 10px; padding: 13px 15px; margin-bottom: 8px; transition: border-color 0.15s;
+
   }
+
   .log-item:hover { border-color: var(--border2); }
 
+
+
   .scroll-list {
+
     max-height: 460px; overflow-y: auto;
+
     scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+
   }
+
   .scroll-list::-webkit-scrollbar { width: 3px; }
+
   .scroll-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+
+
   .search-wrap { position: relative; }
+
   .search-wrap input { padding-left: 36px; }
+
   .search-icon {
+
     position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+
     color: var(--text2); pointer-events: none; font-size: 13px; opacity: 0.5;
+
   }
+
+
 
   .toast {
+
     position: fixed; bottom: 20px; right: 20px;
+
     background: var(--surface); border: 1px solid var(--border);
+
     border-radius: 10px; padding: 11px 16px;
+
     font-size: 13px; font-weight: 500; z-index: 9999;
+
     opacity: 0; transform: translateY(6px); transition: all 0.25s;
+
     max-width: 260px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); color: var(--text);
+
   }
+
   .toast.show { opacity: 1; transform: translateY(0); }
 
+
+
   .captains-pool {
+
     background: var(--surface); border: 1px solid var(--border);
+
     border-radius: 12px; padding: 15px;
+
   }
+
+
 
   .empty-state { text-align: center; padding: 36px 20px; color: var(--text2); font-size: 13px; }
+
   .empty-state .emoji { font-size: 32px; margin-bottom: 10px; opacity: 0.5; }
 
+
+
   .win-preview {
+
     margin-top: 10px; padding: 12px 14px;
+
     background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+
   }
+
+
 
   label {
+
     font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+
     color: var(--text2); display: block; margin-bottom: 5px;
+
   }
+
   .form-group { margin-bottom: 13px; }
+
   select { cursor: pointer; }
+
   .pname {
+
     flex: 1; font-size: 13.5px; font-weight: 500;
+
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text);
+
   }
+
   .section-title {
+
     font-size: 11px; font-weight: 600; text-transform: uppercase;
+
     letter-spacing: 0.1em; color: var(--text2); margin-bottom: 10px; margin-top: 20px;
+
   }
+
   .danger-zone { border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-top: 20px; }
+
   .danger-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); opacity: 0.8; margin-bottom: 10px; }
+
   .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; }
 
+
+
   @media (min-width: 600px) { .teams-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+
   @media (min-width: 960px) { .teams-grid { grid-template-columns: repeat(3, 1fr); } }
+
 </style>
+
 </head>
+
 <body>
 
+
+
 <header class="site-header px-4 py-3">
+
   <div class="flex items-center gap-3 max-w-4xl mx-auto">
+
     <span style="font-size:22px;line-height:1;">⚽</span>
+
     <div class="flex-1 min-w-0">
+
       <div class="header-title truncate">Bangkapi, Hua Mak, BKK Football Group</div>
+
       <div class="header-sub">Team Draft Engine</div>
+
     </div>
+
     <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle light/dark mode">
+
       <span id="themeIcon">☀️</span>
+
     </button>
+
   </div>
+
 </header>
 
+
+
 <div class="tab-bar max-w-4xl mx-auto w-full">
+
   <button class="tab-btn active" onclick="switchTab('master', this)">📋 Master List</button>
+
   <button class="tab-btn" onclick="switchTab('draft', this)">⚽ Draft Teams</button>
+
   <button class="tab-btn" onclick="switchTab('logs', this)">📖 Match Logs</button>
+
   <button class="tab-btn" onclick="switchTab('dashboard', this)">🏆 Dashboard</button>
+
 </div>
+
+
 
 <main class="max-w-4xl mx-auto px-4 pb-20 pt-4">
 
+
+
   <!-- MASTER LIST -->
+
   <div id="tab-master" class="tab-content active">
+
     <div class="card mb-4">
+
       <div class="card-header"><span id="formIconEl" style="opacity:0.6;">➕</span><span id="formTitle">Add New Player</span></div>
+
       <div class="p-4">
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
           <div class="form-group mb-0">
+
             <label>Player Name</label>
+
             <input type="text" id="playerName" placeholder="Full name…" />
+
           </div>
+
           <div class="form-group mb-0">
+
             <label>Star Rating</label>
+
             <select id="playerStars">
+
               <option value="5">⭐⭐⭐⭐⭐ — 5 Stars</option>
+
               <option value="4">⭐⭐⭐⭐ — 4 Stars</option>
+
               <option value="3" selected>⭐⭐⭐ — 3 Stars</option>
+
               <option value="2">⭐⭐ — 2 Stars</option>
+
               <option value="1">⭐ — 1 Star</option>
+
             </select>
+
           </div>
+
         </div>
+
         <div class="flex gap-2 mt-3">
+
           <button class="btn btn-primary" onclick="savePlayer()">Save Player</button>
+
           <button class="btn btn-secondary" id="cancelEditBtn" onclick="cancelEdit()" style="display:none;">Cancel</button>
+
         </div>
+
         <input type="hidden" id="editPlayerId" value="">
+
       </div>
+
     </div>
 
+
+
     <div class="flex flex-wrap gap-2 mb-3">
+
       <div class="search-wrap flex-1 min-w-36">
+
         <span class="search-icon">🔍</span>
+
         <input type="text" id="searchInput" placeholder="Search players…" oninput="renderMasterList()" />
+
       </div>
+
       <button class="btn btn-secondary btn-sm" onclick="exportJSON()">↑ Export</button>
+
       <label class="btn btn-secondary btn-sm cursor-pointer" style="margin-bottom:0;">
+
         ↓ Import
+
         <input type="file" accept=".json" id="importFile" onchange="importJSON(event)" style="display:none;" />
+
       </label>
+
     </div>
+
+
 
     <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text2);margin-bottom:8px;padding:0 2px;" id="masterCount"></div>
 
+
+
     <div class="card">
+
       <div class="scroll-list" id="masterList"></div>
+
     </div>
+
+
 
     <div class="danger-zone">
+
       <div class="danger-label">⚠ Danger Zone</div>
+
       <button class="btn btn-danger btn-sm" onclick="confirmReset()">🗑️ Reset App (Clear All Data)</button>
+
     </div>
+
   </div>
+
+
 
   <!-- DRAFT TEAMS -->
+
   <div id="tab-draft" class="tab-content">
+
     <div class="counter-banner mb-4">
+
       <div>
+
         <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text2);margin-bottom:3px;">Selected Today</div>
+
         <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--text);" id="draftCounter">0 Players</div>
+
       </div>
+
       <span class="status-dot"></span>
+
     </div>
 
+
+
     <div class="card mb-4">
+
       <div class="card-header"><span style="opacity:0.6;">👤</span>Add Guest Player</div>
+
       <div class="p-4">
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
           <div class="form-group mb-0">
+
             <label>Guest Name</label>
+
             <input type="text" id="guestName" placeholder="Guest name…" />
+
           </div>
+
           <div class="form-group mb-0">
+
             <label>Star Rating</label>
+
             <select id="guestStars">
+
               <option value="5">⭐⭐⭐⭐⭐</option>
+
               <option value="4">⭐⭐⭐⭐</option>
+
               <option value="3" selected>⭐⭐⭐</option>
+
               <option value="2">⭐⭐</option>
+
               <option value="1">⭐</option>
+
             </select>
+
           </div>
+
         </div>
+
         <button class="btn btn-secondary mt-3 btn-sm" onclick="addGuest()">+ Add Guest</button>
+
       </div>
+
     </div>
 
+
+
     <div class="card mb-4">
+
       <div class="card-header"><span style="opacity:0.6;">⚡</span>Generate Teams</div>
+
       <div class="p-4 flex flex-wrap gap-3 items-end">
+
         <div class="form-group mb-0 flex-1 min-w-32">
+
           <label>Number of Teams</label>
+
           <select id="numTeams">
+
             <option value="2">2 Teams</option>
+
             <option value="3">3 Teams</option>
+
             <option value="4">4 Teams</option>
+
             <option value="5">5 Teams</option>
+
           </select>
+
         </div>
+
         <button class="btn btn-primary" onclick="generateTeams()">Generate</button>
+
         <button class="btn btn-secondary btn-sm" onclick="clearDraftChecks()">Clear All</button>
+
       </div>
+
     </div>
 
+
+
     <div class="card mb-4">
+
       <div class="card-header"><span style="opacity:0.6;">👥</span>Player Check-In</div>
+
       <div class="px-4 pt-3 pb-2">
+
         <div class="search-wrap">
+
           <span class="search-icon">🔍</span>
+
           <input type="text" id="draftSearch" placeholder="Search players…" oninput="renderDraftList()" />
+
         </div>
+
       </div>
+
       <div class="scroll-list" id="draftList"></div>
+
     </div>
+
+
 
     <div id="teamsOutput"></div>
+
   </div>
+
+
 
   <!-- MATCH LOGS -->
+
   <div id="tab-logs" class="tab-content">
+
     <div class="card mb-4">
+
       <div class="card-header"><span style="opacity:0.6;">📝</span>Add New Match Log</div>
+
       <div class="p-4" id="logFormContent"></div>
+
     </div>
+
     <div>
+
       <div class="section-title">Match History</div>
+
       <div id="logsList"></div>
+
     </div>
+
   </div>
 
+
+
   <!-- DASHBOARD -->
+
   <div id="tab-dashboard" class="tab-content">
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
       <div class="card">
+
         <div class="card-header"><span style="opacity:0.6;">🏆</span>Champions Leaderboard</div>
+
         <div class="scroll-list" id="lbChampions"></div>
+
       </div>
+
       <div class="card">
+
         <div class="card-header"><span style="opacity:0.6;">🏃‍♂️</span>Most Active Players</div>
+
         <div class="scroll-list" id="lbActive"></div>
+
       </div>
+
     </div>
+
   </div>
+
+
 
 </main>
 
+
+
 <div class="toast" id="toast"></div>
 
+
+
 <div class="modal-overlay" id="modal" style="display:none;" onclick="closeModal(event)">
+
   <div class="modal-box"><div id="modalContent"></div></div>
+
 </div>
 
+
+
 <script>
+
 // ==================== THEME ====================
+
 function applyTheme(dark) {
+
   document.documentElement.classList.toggle('dark', dark);
+
   document.getElementById('themeIcon').textContent = dark ? '☀️' : '🌙';
+
   localStorage.setItem('theme', dark ? 'dark' : 'light');
+
 }
+
 function toggleTheme() { applyTheme(!document.documentElement.classList.contains('dark')); }
+
 (function() { applyTheme(localStorage.getItem('theme') !== 'light'); })();
 
+
+
 // ==================== DATA LAYER ====================
+
 const DEFAULT_PLAYERS = ['Aye Min','Aye Min Oo','Khaing Moe','Paing Zayer','Win Min Maung Oo','Gwin Pyae','Aung Myo Win','Thaw Gyi','Min KO KO','Zay Yein Soe Tint','Ahnt Min Nyi','Hpone Myint Kyaw','Hein Htet Aung','Tay Za','Low Pool','Aung Dun Ba','Lynn Htet Hein','Hein Htet Oo','Myat Thu Aung','Kyaw Zin Lin','Oo Phyo Gyi','Thar Hset','Wyne Chit Xtun','Kaung Khant Kyaw','Päîñĝ Pĥøñë Mÿãț','Sayar Thein','Momo Metalversal','Zwe Pyae','Ye Lin Htun','Thein Min Htike','ZarNi Aung','Zin Min Htet','Htut O W','Zarni Aung','Zin Min','Min Khent','Kyaw Zin Oo','Mhem Sura','Mg Ko Ko Htwe','Myo Naing Win','Naung Naung','Tun Myo Naing','Naing Zaw Zaw','Aung Myat Thu','Aung Kyaw','Zar Ni Tun','Khun Paing Zay Htut','Kyaw Lin Thet','Sylvester San','Aung Khant'];
+
+
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 
+
+
 function loadPlayers() {
+
   let p = JSON.parse(localStorage.getItem('players') || 'null');
+
   if (!p) {
+
     p = DEFAULT_PLAYERS.map(name => ({ id: uid(), name, stars: 3, matchesPlayed: 0, championships: 0 }));
+
     savePlayers(p);
+
   }
+
   return p;
+
 }
+
 function savePlayers(p) { localStorage.setItem('players', JSON.stringify(p)); }
+
 function loadLogs() { return JSON.parse(localStorage.getItem('matchLogs') || '[]'); }
+
 function saveLogs(l) { localStorage.setItem('matchLogs', JSON.stringify(l)); }
+
 function loadDraft() { return JSON.parse(localStorage.getItem('currentDraftData') || 'null'); }
+
 function saveDraft(d) { localStorage.setItem('currentDraftData', JSON.stringify(d)); }
+
 function clearDraft() { localStorage.removeItem('currentDraftData'); }
 
+
+
 // ==================== UI STATE ====================
+
 let editingId = null;
+
 let guestPlayers = [];
 
+
+
 // ==================== TABS ====================
+
 function switchTab(name, btn) {
+
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
   document.getElementById('tab-' + name).classList.add('active');
+
   btn.classList.add('active');
+
   if (name === 'master') renderMasterList();
+
   if (name === 'draft') { renderDraftList(); renderTeamsIfSaved(); }
+
   if (name === 'logs') { renderLogForm(); renderLogs(); }
+
   if (name === 'dashboard') renderDashboard();
+
 }
+
+
 
 // ==================== MASTER LIST ====================
+
 function starsHTML(n) { return '⭐'.repeat(n); }
 
+
+
 function renderMasterList() {
+
   const players = loadPlayers();
+
   const q = (document.getElementById('searchInput').value || '').toLowerCase();
+
   const list = document.getElementById('masterList');
+
   const filtered = players.filter(p => p.name.toLowerCase().includes(q));
+
   document.getElementById('masterCount').textContent = `${players.length} players total · ${filtered.length} shown`;
+
   if (!filtered.length) {
+
     list.innerHTML = `<div class="empty-state"><div class="emoji">🔍</div><div>No players found</div></div>`;
+
     return;
+
   }
+
   list.innerHTML = filtered.map(p => `
+
     <div class="player-row">
+
       <div class="pname">${escHtml(p.name)}</div>
+
       <div class="stars">${starsHTML(p.stars)}</div>
+
       <div class="flex gap-1 items-center">
+
         <span class="badge badge-blue">🏟 ${p.matchesPlayed}</span>
+
         <span class="badge badge-gold">🏆 ${p.championships}</span>
+
       </div>
+
       <button class="btn btn-secondary btn-sm" onclick="editPlayer('${p.id}')">Edit</button>
+
       <button class="btn btn-danger btn-sm" onclick="deletePlayer('${p.id}')">✕</button>
+
     </div>
+
   `).join('');
+
 }
+
+
 
 function savePlayer() {
+
   const name = document.getElementById('playerName').value.trim();
+
   const stars = parseInt(document.getElementById('playerStars').value);
+
   if (!name) { showToast('⚠️ Enter a player name'); return; }
+
   const players = loadPlayers();
+
   if (editingId) {
+
     const idx = players.findIndex(p => p.id === editingId);
+
     if (idx >= 0) { players[idx].name = name; players[idx].stars = stars; }
+
     editingId = null;
+
     document.getElementById('editPlayerId').value = '';
+
     document.getElementById('cancelEditBtn').style.display = 'none';
+
     document.getElementById('formTitle').textContent = 'Add New Player';
+
     document.getElementById('formIconEl').textContent = '➕';
+
   } else {
+
     players.push({ id: uid(), name, stars, matchesPlayed: 0, championships: 0 });
+
   }
+
   savePlayers(players);
+
   document.getElementById('playerName').value = '';
+
   document.getElementById('playerStars').value = '3';
+
   renderMasterList();
+
   showToast('✅ Player saved');
+
 }
+
+
 
 function editPlayer(id) {
+
   const players = loadPlayers();
+
   const p = players.find(x => x.id === id);
+
   if (!p) return;
+
   editingId = id;
+
   document.getElementById('playerName').value = p.name;
+
   document.getElementById('playerStars').value = p.stars;
+
   document.getElementById('editPlayerId').value = id;
+
   document.getElementById('cancelEditBtn').style.display = 'inline-flex';
+
   document.getElementById('formTitle').textContent = 'Edit — ' + p.name;
+
   document.getElementById('formIconEl').textContent = '✏️';
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
 }
+
+
 
 function cancelEdit() {
+
   editingId = null;
+
   document.getElementById('playerName').value = '';
+
   document.getElementById('playerStars').value = '3';
+
   document.getElementById('cancelEditBtn').style.display = 'none';
+
   document.getElementById('formTitle').textContent = 'Add New Player';
+
   document.getElementById('formIconEl').textContent = '➕';
+
 }
+
+
 
 function deletePlayer(id) {
+
   if (!confirm('Delete this player?')) return;
+
   savePlayers(loadPlayers().filter(p => p.id !== id));
+
   renderMasterList();
+
   showToast('Removed');
+
 }
+
+
 
 function exportJSON() {
+
   const data = { players: loadPlayers(), matchLogs: loadLogs() };
+
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+
   const a = document.createElement('a');
+
   a.href = URL.createObjectURL(blob);
+
   a.download = 'bkk-football-data.json';
+
   a.click();
+
   showToast('📤 Exported');
+
 }
+
+
 
 function importJSON(event) {
+
   const file = event.target.files[0];
+
   if (!file) return;
+
   const reader = new FileReader();
+
   reader.onload = e => {
+
     try {
+
       const data = JSON.parse(e.target.result);
+
       if (data.players) savePlayers(data.players);
+
       if (data.matchLogs) saveLogs(data.matchLogs);
+
       renderMasterList();
+
       showToast('📥 Import successful');
+
     } catch { showToast('❌ Invalid JSON'); }
+
   };
+
   reader.readAsText(file);
+
   event.target.value = '';
+
 }
+
+
 
 function confirmReset() {
+
   showModal(`
+
     <div style="text-align:center;">
+
       <div style="font-size:40px;margin-bottom:14px;">⚠️</div>
+
       <h2 style="font-family:'Sora',sans-serif;font-size:17px;font-weight:700;margin-bottom:8px;color:var(--red);">Reset All Data?</h2>
+
       <p style="font-size:13px;color:var(--text2);margin-bottom:22px;line-height:1.6;">This permanently deletes all players and match logs. This cannot be undone.</p>
+
       <div style="display:flex;gap:10px;justify-content:center;">
+
         <button class="btn btn-danger" onclick="doReset()">🗑️ Delete Everything</button>
+
         <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+
       </div>
+
     </div>
+
   `);
+
 }
+
+
 
 function doReset() {
+
   const theme = localStorage.getItem('theme');
+
   localStorage.clear();
+
   if (theme) localStorage.setItem('theme', theme);
+
   location.reload();
+
 }
 
+
+
 // ==================== DRAFT ====================
+
 let draftChecks = {};
+
+
 
 function getDraftPlayers() { return [...loadPlayers(), ...guestPlayers]; }
 
+
+
 function renderDraftList() {
+
   const players = getDraftPlayers();
+
   const q = (document.getElementById('draftSearch').value || '').toLowerCase();
+
   const list = document.getElementById('draftList');
+
   const filtered = players.filter(p => p.name.toLowerCase().includes(q));
+
   if (!filtered.length) {
+
     list.innerHTML = `<div class="empty-state"><div class="emoji">🔍</div><div>No players found</div></div>`;
+
     return;
+
   }
+
   list.innerHTML = filtered.map(p => {
+
     const s = draftChecks[p.id] || { play: false, captain: false };
+
     const capDisabled = !s.play ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : '';
+
     const isGuest = guestPlayers.find(g => g.id === p.id);
+
     return `
+
     <div class="player-row">
+
       <label style="display:flex;align-items:center;gap:4px;margin-bottom:0;cursor:pointer;text-transform:none;letter-spacing:0;font-size:11px;color:var(--accent);">
+
         <input type="checkbox" ${s.play ? 'checked' : ''} onchange="togglePlay('${p.id}', this.checked)" />Play
+
       </label>
+
       <label style="display:flex;align-items:center;gap:4px;margin-bottom:0;cursor:${s.play ? 'pointer' : 'not-allowed'};text-transform:none;letter-spacing:0;font-size:11px;color:${s.play ? 'var(--gold)' : 'var(--text2)'};">
+
         <input type="checkbox" ${s.captain ? 'checked' : ''} ${capDisabled} onchange="toggleCaptain('${p.id}', this.checked)" />Cap
+
       </label>
+
       <div class="pname">${escHtml(p.name)}${isGuest ? ' <span class="badge badge-blue" style="font-size:10px;padding:1px 6px;">Guest</span>' : ''}</div>
+
       <div class="stars">${starsHTML(p.stars)}</div>
+
       ${isGuest ? `<button class="btn btn-danger btn-sm" onclick="removeGuest('${p.id}')">✕</button>` : ''}
+
     </div>`;
+
   }).join('');
+
   updateDraftCounter();
+
 }
+
+
 
 function togglePlay(id, checked) {
+
   if (!draftChecks[id]) draftChecks[id] = { play: false, captain: false };
+
   draftChecks[id].play = checked;
+
   if (!checked) draftChecks[id].captain = false;
+
   renderDraftList();
+
 }
+
+
 
 function toggleCaptain(id, checked) {
+
   if (!draftChecks[id]) draftChecks[id] = { play: false, captain: false };
+
   if (!draftChecks[id].play) return;
+
   draftChecks[id].captain = checked;
+
   renderDraftList();
+
 }
+
+
 
 function updateDraftCounter() {
+
   const count = Object.values(draftChecks).filter(s => s.play).length;
+
   document.getElementById('draftCounter').textContent = `${count} Player${count !== 1 ? 's' : ''}`;
+
 }
+
+
 
 function clearDraftChecks() {
+
   draftChecks = {};
+
   renderDraftList();
+
   document.getElementById('teamsOutput').innerHTML = '';
+
 }
+
+
 
 function addGuest() {
+
   const name = document.getElementById('guestName').value.trim();
+
   const stars = parseInt(document.getElementById('guestStars').value);
+
   if (!name) { showToast('⚠️ Enter guest name'); return; }
+
   const g = { id: uid(), name, stars, matchesPlayed: 0, championships: 0, isGuest: true };
+
   guestPlayers.push(g);
+
   draftChecks[g.id] = { play: true, captain: false };
+
   document.getElementById('guestName').value = '';
+
   document.getElementById('guestStars').value = '3';
+
   renderDraftList();
+
   showToast(`👤 ${name} added`);
+
 }
+
+
 
 function removeGuest(id) {
+
   guestPlayers = guestPlayers.filter(g => g.id !== id);
+
   delete draftChecks[id];
+
   renderDraftList();
+
 }
+
+
 
 const TEAM_NAMES = ['Team A','Team B','Team C','Team D','Team E'];
+
 const TEAM_ACCENTS = ['team-a-accent','team-b-accent','team-c-accent','team-d-accent','team-e-accent'];
+
 const TEAM_DOTS = ['dot-a','dot-b','dot-c','dot-d','dot-e'];
+
 const TEAM_ICONS = ['🟢','🔵','🟠','🟣','🟡'];
 
+
+
 function generateTeams() {
+
   const numTeams = parseInt(document.getElementById('numTeams').value);
+
   const players = getDraftPlayers();
+
   const selected = players.filter(p => draftChecks[p.id]?.play);
+
   if (selected.length < 2) { showToast('⚠️ Select at least 2 players'); return; }
 
+
+
   const captains = selected.filter(p => draftChecks[p.id]?.captain);
+
   const nonCaptains = selected.filter(p => !draftChecks[p.id]?.captain);
 
+
+
   const grouped = {};
+
   for (let s = 5; s >= 1; s--) {
+
     const tier = nonCaptains.filter(p => p.stars === s);
+
     shuffle(tier);
+
     grouped[s] = tier;
+
   }
+
+
 
   const teams = Array.from({ length: numTeams }, () => []);
+
   let teamIdx = 0, direction = 1;
+
   const orderedPlayers = [5, 4, 3, 2, 1].flatMap(s => grouped[s]);
 
+
+
   for (const player of orderedPlayers) {
+
     teams[teamIdx].push(player);
+
     teamIdx += direction;
+
     if (teamIdx >= numTeams) { teamIdx = numTeams - 1; direction = -1; }
+
     else if (teamIdx < 0) { teamIdx = 0; direction = 1; }
+
   }
+
+
 
   const draftData = {
+
     teams: teams.map((t, i) => ({ name: TEAM_NAMES[i], players: t })),
+
     captains, generatedAt: new Date().toISOString()
+
   };
+
   saveDraft(draftData);
+
   renderTeamsOutput(draftData);
+
 }
+
+
 
 function renderTeamsOutput(draftData) {
+
   const out = document.getElementById('teamsOutput');
+
   let html = '';
 
+
+
   if (draftData.captains && draftData.captains.length > 0) {
+
     html += `
+
     <div class="captains-pool mb-4">
+
       <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--gold);margin-bottom:10px;">⚔️ Captains Pool</div>
+
       ${draftData.captains.map(p => `
+
         <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);">
+
           <span>🔰</span>
+
           <span style="font-size:13.5px;font-weight:600;color:var(--text);">${escHtml(p.name)}</span>
+
           <span class="stars ml-auto">${starsHTML(p.stars)}</span>
+
         </div>
+
       `).join('')}
+
     </div>`;
+
   }
+
+
 
   html += `<div class="teams-grid">`;
+
   draftData.teams.forEach((team, i) => {
+
     const avgStars = team.players.length
+
       ? (team.players.reduce((s, p) => s + p.stars, 0) / team.players.length).toFixed(1) : 0;
+
     html += `
+
     <div class="team-card ${TEAM_ACCENTS[i]}">
+
       <div class="team-header">
+
         <div style="display:flex;align-items:center;gap:8px;">
+
           <div class="team-dot ${TEAM_DOTS[i]}"></div>
+
           <span>${team.name}</span>
+
         </div>
+
         <span style="font-size:12px;font-weight:400;color:var(--text2);">${team.players.length}p · ⭐${avgStars}</span>
+
       </div>
+
       ${team.players.map((p, j) => `
+
         <div class="player-row" style="padding:8px 14px;">
+
           <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text2);width:18px;flex-shrink:0;">${j + 1}.</span>
+
           <span class="pname" style="font-size:13px;">${escHtml(p.name)}</span>
-          <span class="stars">${starsHTML(p.stars)}</span>
+
         </div>
+
       `).join('')}
+
     </div>`;
+
   });
+
   html += `</div>`;
 
+
+
   html += `<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+
     <button class="btn btn-secondary btn-sm" onclick="copyForMessenger()">📋 Copy for Messenger</button>
+
     <button class="btn btn-secondary btn-sm" onclick="generateTeams()">↺ Re-Draft</button>
+
   </div>`;
 
+
+
   out.innerHTML = html;
+
 }
+
+
 
 function renderTeamsIfSaved() {
+
   const d = loadDraft();
+
   if (d) renderTeamsOutput(d);
+
 }
+
+
 
 // UPDATED: Clean output — only team names and player names, no stars, no guest tags
+
 function copyForMessenger() {
+
   const d = loadDraft();
+
   if (!d) { showToast('No draft to copy'); return; }
+
   let txt = '⚽ BKK Football Group — Draft Teams\n\n';
+
   if (d.captains?.length) {
+
     txt += '⚔️ Captains:\n';
+
     d.captains.forEach(p => { txt += `  🔰 ${p.name}\n`; });
+
     txt += '\n';
+
   }
+
   d.teams.forEach((team, i) => {
+
     txt += `${TEAM_ICONS[i]} ${team.name}\n`;
+
     team.players.forEach((p, j) => { txt += `  ${j + 1}. ${p.name}\n`; });
+
     txt += '\n';
+
   });
+
   navigator.clipboard.writeText(txt.trim())
+
     .then(() => showToast('📋 Copied to clipboard'))
+
     .catch(() => showToast('❌ Copy failed'));
+
 }
+
+
 
 function shuffle(arr) {
+
   for (let i = arr.length - 1; i > 0; i--) {
+
     const j = Math.floor(Math.random() * (i + 1));
+
     [arr[i], arr[j]] = [arr[j], arr[i]];
+
   }
+
   return arr;
+
 }
+
+
 
 // ==================== MATCH LOGS ====================
+
 function renderLogForm() {
+
   const draft = loadDraft();
+
   const el = document.getElementById('logFormContent');
+
   if (draft) renderAutoLogForm(draft, el);
+
   else renderManualLogForm(el);
+
 }
+
+
 
 function renderAutoLogForm(draft, el) {
+
   const teamOpts = draft.teams.map((t, i) => `<option value="${i}">${t.name}</option>`).join('');
+
   const capOpts = (draft.captains || []).map(p => `<option value="${p.id}">${escHtml(p.name)}</option>`).join('');
+
   el.innerHTML = `
+
     <div class="badge badge-green" style="margin-bottom:12px;">⚡ Auto Mode — Draft Data Loaded</div>
+
     <div class="form-group">
+
       <label>Match Date</label>
+
       <input type="text" id="logDate" value="${new Date().toLocaleDateString('en-GB', { weekday:'short',year:'numeric',month:'short',day:'numeric' })}" />
+
     </div>
+
     <div class="form-group">
+
       <label>Winning Captain</label>
+
       ${capOpts
+
         ? `<select id="logCaptain"><option value="">— Select Captain —</option>${capOpts}</select>`
+
         : `<div style="font-size:13px;color:var(--text2);font-style:italic;padding:4px 0;">No captains in this draft</div><input type="hidden" id="logCaptain" value="">`}
+
     </div>
+
     <div class="form-group">
+
       <label>Winning Team</label>
+
       <select id="logWinTeam" onchange="showWinTeamPlayers()">
+
         <option value="">— Select Winning Team —</option>
+
         ${teamOpts}
+
       </select>
+
     </div>
+
     <div id="winTeamPreview"></div>
+
     <button class="btn btn-primary mt-3" onclick="saveAutoLog()">Save Match Log</button>
+
   `;
+
 }
+
+
 
 function showWinTeamPlayers() {
+
   const draft = loadDraft();
+
   const idx = parseInt(document.getElementById('logWinTeam').value);
+
   const preview = document.getElementById('winTeamPreview');
+
   if (isNaN(idx) || !draft) { preview.innerHTML = ''; return; }
+
   const team = draft.teams[idx];
+
   preview.innerHTML = `
+
     <div class="win-preview">
+
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:8px;">✓ ${team.name} — Will receive championship</div>
+
       ${team.players.map(p => `
+
         <div style="font-size:13px;padding:3px 0;display:flex;align-items:center;gap:6px;color:var(--text);">
+
           <span style="color:var(--accent);font-size:10px;">●</span>${escHtml(p.name)}
+
         </div>`).join('')}
+
     </div>`;
+
 }
+
+
 
 function renderManualLogForm(el) {
+
   const players = loadPlayers();
+
   const playerOpts = players.map(p => `<option value="${p.id}">${escHtml(p.name)}</option>`).join('');
+
   el.innerHTML = `
+
     <div class="badge badge-blue" style="margin-bottom:12px;">📝 Manual Mode — No Draft Data</div>
+
     <div class="form-group">
+
       <label>Match Date</label>
+
       <input type="text" id="logDate" value="${new Date().toLocaleDateString('en-GB', { weekday:'short',year:'numeric',month:'short',day:'numeric' })}" />
+
     </div>
+
     <div class="form-group">
+
       <label>Winning Captain</label>
+
       <select id="logCaptain"><option value="">— None —</option>${playerOpts}</select>
+
     </div>
+
     <div class="form-group">
+
       <label>Players Who Played Today</label>
+
       <div class="card" style="margin-top:6px;">
+
         <div class="scroll-list" style="max-height:280px;">
+
           ${players.map(p => `
+
             <div class="player-row">
+
               <label style="display:flex;align-items:center;gap:8px;margin-bottom:0;cursor:pointer;flex:1;text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:500;color:var(--text);">
+
                 <input type="checkbox" id="mplay-${p.id}" class="manual-play" />${escHtml(p.name)}
+
               </label>
+
               <span class="stars" style="font-size:11px;">${starsHTML(p.stars)}</span>
+
               <label style="display:flex;align-items:center;gap:4px;margin-bottom:0;cursor:pointer;text-transform:none;letter-spacing:0;font-size:11px;color:var(--gold);">
+
                 <input type="checkbox" id="mchamp-${p.id}" class="manual-champ" />🏆
+
               </label>
+
             </div>
+
           `).join('')}
+
         </div>
+
       </div>
+
     </div>
+
     <button class="btn btn-primary mt-2" onclick="saveManualLog()">Save Match Log</button>
+
   `;
+
 }
+
+
 
 function saveAutoLog() {
+
   const draft = loadDraft();
+
   const captainId = document.getElementById('logCaptain')?.value || '';
+
   const winTeamIdx = document.getElementById('logWinTeam').value;
+
   const date = document.getElementById('logDate').value;
+
   if (winTeamIdx === '') { showToast('⚠️ Select a winning team'); return; }
+
   const winTeam = draft.teams[parseInt(winTeamIdx)];
+
   const allPlayers = loadPlayers();
 
+
+
   const allDraftPlayers = [...(draft.captains || []), ...draft.teams.flatMap(t => t.players)];
+
   const playedIds = allDraftPlayers.map(p => p.id);
+
   const champIds = winTeam.players.map(p => p.id);
+
   if (captainId) champIds.push(captainId);
 
+
+
   const log = {
+
     id: uid(), date, type: 'auto', captainId,
+
     winningTeamName: winTeam.name, playedIds, champIds,
+
     draftSnapshot: JSON.parse(JSON.stringify(draft))
+
   };
 
+
+
   playedIds.forEach(id => { const p = allPlayers.find(x => x.id === id); if (p) p.matchesPlayed++; });
+
   champIds.forEach(id => { const p = allPlayers.find(x => x.id === id); if (p) p.championships++; });
+
   savePlayers(allPlayers);
 
+
+
   const logs = loadLogs();
+
   logs.unshift(log);
+
   saveLogs(logs);
+
   clearDraft();
+
   showToast('✅ Match log saved');
+
   renderLogForm();
+
   renderLogs();
+
 }
 
+
+
 function saveManualLog() {
+
   const players = loadPlayers();
+
   const captainId = document.getElementById('logCaptain').value;
+
   const date = document.getElementById('logDate').value;
+
   const playedIds = [], champIds = [];
+
   players.forEach(p => {
+
     if (document.getElementById('mplay-' + p.id)?.checked) playedIds.push(p.id);
+
     if (document.getElementById('mchamp-' + p.id)?.checked) champIds.push(p.id);
+
   });
+
   if (!playedIds.length) { showToast('⚠️ Select at least one player'); return; }
+
   const fullChampIds = [...champIds];
+
   if (captainId && !fullChampIds.includes(captainId)) fullChampIds.push(captainId);
+
+
 
   const log = { id: uid(), date, type: 'manual', captainId, playedIds, champIds: fullChampIds, winningTeamName: 'Manual' };
 
+
+
   playedIds.forEach(id => { const p = players.find(x => x.id === id); if (p) p.matchesPlayed++; });
+
   fullChampIds.forEach(id => { const p = players.find(x => x.id === id); if (p) p.championships++; });
+
   savePlayers(players);
 
+
+
   const logs = loadLogs();
+
   logs.unshift(log);
+
   saveLogs(logs);
+
   showToast('✅ Match log saved');
+
   renderLogForm();
+
   renderLogs();
+
 }
+
+
 
 function renderLogs() {
+
   const logs = loadLogs();
+
   const players = loadPlayers();
+
   const el = document.getElementById('logsList');
+
   if (!logs.length) {
+
     el.innerHTML = `<div class="empty-state"><div class="emoji">📖</div><div>No match logs yet</div></div>`;
+
     return;
+
   }
+
   el.innerHTML = logs.map(log => {
+
     const captain = log.captainId ? players.find(p => p.id === log.captainId) : null;
+
     return `
+
     <div class="log-item">
+
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+
         <div>
+
           <div style="font-weight:600;font-size:14px;color:var(--text);">${escHtml(log.date)}</div>
+
           <div style="font-size:12px;color:var(--text2);margin-top:3px;">🏆 Winner: <span style="color:var(--gold);">${log.winningTeamName}</span></div>
+
           ${captain ? `<div style="font-size:12px;color:var(--text2);">⚔️ Captain: <span style="color:var(--gold);">${escHtml(captain.name)}</span></div>` : ''}
+
           <div style="font-size:11px;color:var(--text2);margin-top:4px;font-family:'JetBrains Mono',monospace;">👥 ${log.playedIds.length} played · 🏅 ${log.champIds.length} champions</div>
+
         </div>
+
         <button class="btn btn-danger btn-sm" style="flex-shrink:0;" onclick="deleteLog('${log.id}')">🗑️</button>
+
       </div>
+
     </div>`;
+
   }).join('');
+
 }
+
+
 
 function deleteLog(id) {
+
   if (!confirm('Delete this log? Stats will be reverted.')) return;
+
   const logs = loadLogs();
+
   const log = logs.find(l => l.id === id);
+
   if (!log) return;
+
   const players = loadPlayers();
+
   (log.playedIds || []).forEach(pid => { const p = players.find(x => x.id === pid); if (p && p.matchesPlayed > 0) p.matchesPlayed--; });
+
   (log.champIds || []).forEach(pid => { const p = players.find(x => x.id === pid); if (p && p.championships > 0) p.championships--; });
+
   savePlayers(players);
+
   saveLogs(logs.filter(l => l.id !== id));
+
   showToast('🗑️ Log deleted & stats reverted');
+
   renderLogs();
+
 }
+
+
 
 // ==================== DASHBOARD ====================
+
 function renderDashboard() {
+
   const players = loadPlayers();
+
   renderLeaderboard('lbChampions', players, 'championships', '🏆', 'var(--gold)');
+
   renderLeaderboard('lbActive', players, 'matchesPlayed', '🏃', 'var(--accent)');
+
 }
+
+
 
 function renderLeaderboard(elId, players, field, icon, color) {
+
   const sorted = [...players].sort((a, b) => b[field] - a[field]).filter(p => p[field] > 0);
+
   const el = document.getElementById(elId);
+
   if (!sorted.length) {
+
     el.innerHTML = `<div class="empty-state"><div class="emoji">${icon}</div><div>No data yet</div></div>`;
+
     return;
+
   }
+
   el.innerHTML = sorted.slice(0, 20).map((p, i) => {
+
     const rankLabel = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`;
+
     const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
+
     const pct = sorted[0][field] > 0 ? (p[field] / sorted[0][field]) * 100 : 0;
+
     return `
+
     <div class="lb-row">
+
       <div class="lb-rank ${rankClass}">${rankLabel}</div>
+
       <div style="flex:1;overflow:hidden;">
+
         <div style="font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);">${escHtml(p.name)}</div>
+
         <div class="star-bar"><div class="star-bar-fill" style="width:${pct}%;background:${color};"></div></div>
+
       </div>
+
       <div style="font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;color:${color};">${p[field]}</div>
+
     </div>`;
+
   }).join('');
+
 }
+
+
 
 // ==================== MODAL ====================
+
 function showModal(html) {
+
   document.getElementById('modalContent').innerHTML = html;
+
   document.getElementById('modal').style.display = 'flex';
+
 }
+
 function closeModal(e) {
+
   if (!e || e.target === document.getElementById('modal')) {
+
     document.getElementById('modal').style.display = 'none';
+
   }
+
 }
+
+
 
 // ==================== TOAST ====================
+
 function showToast(msg) {
+
   const t = document.getElementById('toast');
+
   t.textContent = msg;
+
   t.classList.add('show');
+
   setTimeout(() => t.classList.remove('show'), 2800);
+
 }
+
+
 
 // ==================== UTILS ====================
+
 function escHtml(str) {
+
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
 }
 
+
+
 // ==================== INIT ====================
+
 loadPlayers();
+
 renderMasterList();
+
 renderDraftList();
+
 </script>
+
 </body>
+
 </html>
